@@ -7,6 +7,7 @@ import Background from '../assets/Background.jpg';
 import Cloud from '../assets/Cloud.png';
 import useWeatherData from '../hooks/useWeatherData';
 import { formatDate, handleDegreeConvert } from '../functions';
+import WeatherIcon from '../components/WeatherIcon';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -19,10 +20,6 @@ const useStyles = makeStyles(() => ({
     '@media (max-width:600px)': {
       padding: '20px',
     },
-  },
-  image: {
-    marginTop: 20,
-    marginBottom: 20,
   },
 }));
 
@@ -84,15 +81,17 @@ function Home() {
             fontWeight: 700,
             fontSize: { xs: 14, md: 20 },
             lineHeight: { xs: '16.5px', md: '23.5px' },
+            mb: 2,
           }}>
           {formatDate(weatherData.days[0].datetime)}
         </Typography>
-        <img className={classes.image} src={Cloud} alt='weather' />
+        {WeatherIcon[weatherData.days[0].icon]}
         <Typography
           sx={{
             fontWeight: 700,
             fontSize: { xs: 18, md: 30 },
             lineHeight: { xs: '21px', md: '35px' },
+            mt: 2,
           }}>
           {weatherData.days[0].conditions}
         </Typography>
