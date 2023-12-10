@@ -12,7 +12,6 @@ function DegreeTabs() {
       value={value}
       onChange={handleChange}
       indicatorColor='none'
-      textColor='primary'
       scrollButtons='auto'
       sx={{
         '.Mui-selected': {
