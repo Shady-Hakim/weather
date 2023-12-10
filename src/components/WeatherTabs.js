@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Tabs, Tab, Typography, Box } from '@mui/material';
 import WeatherSingleTab from './WeatherSingleTab';
 
-function WeatherTabs({ weather }) {
+function WeatherTabs({ weather, degreeSign }) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const TabPanel = ({ children, value, index, ...props }) => {
+  const TabPanel = ({ children, value, index }) => {
     return (
       <>
         {value === index && (
@@ -44,10 +44,14 @@ function WeatherTabs({ weather }) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <WeatherSingleTab degrees={weather.days[0].hours} hours />
+        <WeatherSingleTab
+          degrees={weather.days[0].hours}
+          hours
+          degreeSign={degreeSign}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <WeatherSingleTab degrees={weather.days} />
+        <WeatherSingleTab degrees={weather.days} degreeSign={degreeSign} />
       </TabPanel>
     </Box>
   );

@@ -8,8 +8,9 @@ import {
   Thunderstorm,
   NightlightRound,
 } from '@mui/icons-material';
+import { handleDegreeConvert } from '../functions';
 
-function WeatherSingleTab({ degrees, hours }) {
+function WeatherSingleTab({ degrees, hours, degreeSign }) {
   const weatherIcons = {
     cloudy: <Cloud fontSize='large' />,
     'clear-night': <NightlightRound fontSize='large' />,
@@ -58,7 +59,7 @@ function WeatherSingleTab({ degrees, hours }) {
               fontWeight: 400,
               fontSize: 36,
             }}>
-            {Math.floor(degree.temp)}&deg;
+            {Math.floor(handleDegreeConvert(degreeSign, degree.temp))}&deg;
           </Typography>
         </Grid>
       ))}
