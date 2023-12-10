@@ -6,7 +6,7 @@ import WeatherTabs from '../components/WeatherTabs';
 import Background from '../assets/Background.jpg';
 import Cloud from '../assets/Cloud.png';
 import useWeatherData from '../hooks/useWeatherData';
-import { handleDegreeConvert } from '../functions';
+import { formatDate, handleDegreeConvert } from '../functions';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -30,17 +30,6 @@ function Home() {
   const { weatherData, loading } = useWeatherData();
   const classes = useStyles();
   const [degreeSign, setDegreeSign] = useState(0);
-
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const year = date.getFullYear();
-    const weekday = new Intl.DateTimeFormat('en-US', {
-      weekday: 'long',
-    }).format(date);
-    const formattedDate = `${weekday} ${day}, ${year}`;
-    return formattedDate;
-  }
 
   if (loading) {
     return <div>Loading...</div>;
