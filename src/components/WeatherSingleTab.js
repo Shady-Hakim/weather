@@ -8,8 +8,9 @@ import {
   Thunderstorm,
   NightlightRound,
 } from '@mui/icons-material';
+import { convertDateToDay, handleDegreeConvert } from '../functions';
 
-function WeatherSingleTab({ degrees, hours }) {
+function WeatherSingleTab({ degrees, hours, degreeSign }) {
   const weatherIcons = {
     cloudy: <Cloud fontSize='large' />,
     'clear-night': <NightlightRound fontSize='large' />,
@@ -18,6 +19,7 @@ function WeatherSingleTab({ degrees, hours }) {
     'partly-cloudy-night': <NightsStay fontSize='large' />,
     rain: <Thunderstorm fontSize='large' />,
   };
+  console.log(new Date());
 
   return (
     <Grid
@@ -49,7 +51,7 @@ function WeatherSingleTab({ degrees, hours }) {
                 ? degree.datetime === '00:00:00'
                   ? 'Now'
                   : degree.datetime.slice(0, 5)
-                : degree.datetime
+                : convertDateToDay(degree.datetime)
             }`}
           </Typography>
           {weatherIcons[degree.icon]}
@@ -58,7 +60,7 @@ function WeatherSingleTab({ degrees, hours }) {
               fontWeight: 400,
               fontSize: 36,
             }}>
-            {Math.floor(degree.temp)}&deg;
+            {Math.floor(handleDegreeConvert(degreeSign, degree.temp))}&deg;
           </Typography>
         </Grid>
       ))}

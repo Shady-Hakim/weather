@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import DegreeTabs from '../components/DegreeTabs';
@@ -6,6 +6,7 @@ import WeatherTabs from '../components/WeatherTabs';
 import Background from '../assets/Background.jpg';
 import Cloud from '../assets/Cloud.png';
 import useWeatherData from '../hooks/useWeatherData';
+import { formatDate, handleDegreeConvert } from '../functions';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -28,20 +29,7 @@ const useStyles = makeStyles(() => ({
 function Home() {
   const { weatherData, loading } = useWeatherData();
   const classes = useStyles();
-  console.log({ weatherData });
-
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const year = date.getFullYear();
-    const weekday = new Intl.DateTimeFormat('en-US', {
-      weekday: 'long',
-    }).format(date);
-
-    const formattedDate = `${weekday} ${day}, ${year}`;
-
-    return formattedDate;
-  }
+  const [degreeSign, setDegreeSign] = useState(0);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -74,7 +62,7 @@ function Home() {
           sx={{ justifyContent: { xs: 'center', md: 'flex-end' } }}
           mt={{ xs: 2, md: 0 }} // Adjusted top margin for better spacing on mobile
         >
-          <DegreeTabs />
+          <DegreeTabs setDegreeSign={setDegreeSign} degreeSign={degreeSign} />
         </Grid>
       </Grid>
 
@@ -120,7 +108,10 @@ function Home() {
             fontSize: { xs: 48, md: 144 },
             lineHeight: { xs: '56px', md: '169px' },
           }}>
-          {Math.floor(weatherData.days[0].temp)}&deg;
+          {Math.floor(
+            handleDegreeConvert(degreeSign, weatherData.days[0].temp)
+          )}
+          &deg;
         </Typography>
         <Typography
           sx={{
@@ -128,8 +119,10 @@ function Home() {
             fontSize: { xs: 18, md: 48 },
             lineHeight: { xs: '30px', md: '56px' },
           }}>
-          {`${Math.floor(weatherData.days[0].tempmax)}° / ${Math.floor(
-            weatherData.days[0].tempmin
+          {`${Math.floor(
+            handleDegreeConvert(degreeSign, weatherData.days[0].tempmax)
+          )}° / ${Math.floor(
+            handleDegreeConvert(degreeSign, weatherData.days[0].tempmin)
           )}°`}
         </Typography>
         <Typography
@@ -142,7 +135,7 @@ function Home() {
         </Typography>
       </Grid>
       <Grid item xs={12} md={12} sx={{ textAlign: 'left' }}>
-        <WeatherTabs weather={weatherData} />
+        <WeatherTabs weather={weatherData} degreeSign={degreeSign} />
       </Grid>
     </Grid>
   );

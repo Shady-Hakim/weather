@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tabs, Tab } from '@mui/material';
 
-function DegreeTabs() {
-  const [value, setValue] = useState(0);
-
+function DegreeTabs({ setDegreeSign, degreeSign }) {
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setDegreeSign(newValue);
   };
   return (
     <Tabs
-      value={value}
+      value={degreeSign}
       onChange={handleChange}
       indicatorColor='none'
       scrollButtons='auto'

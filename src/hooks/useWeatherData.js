@@ -43,7 +43,6 @@ function useWeatherData() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            console.log({ position });
             const { latitude, longitude } = position.coords;
             fetchCity(latitude, longitude);
           },
