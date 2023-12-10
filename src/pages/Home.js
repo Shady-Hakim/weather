@@ -4,7 +4,6 @@ import { makeStyles } from '@mui/styles';
 import DegreeTabs from '../components/DegreeTabs';
 import WeatherTabs from '../components/WeatherTabs';
 import Background from '../assets/Background.jpg';
-import Cloud from '../assets/Cloud.png';
 import useWeatherData from '../hooks/useWeatherData';
 import { formatDate, handleDegreeConvert } from '../functions';
 import WeatherIcon from '../components/WeatherIcon';
@@ -23,21 +22,30 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+/**
+ * Home component displays weather information.
+ * @returns {JSX.Element} Home component.
+ */
 function Home() {
+  // Custom hook to fetch weather data
   const { weatherData, loading } = useWeatherData();
   const classes = useStyles();
   const [degreeSign, setDegreeSign] = useState(0);
 
+  // Loading state while fetching data
   if (loading) {
     return <div>Loading...</div>;
   }
 
+  // Display error message if data fetching fails
   if (!weatherData) {
     return <div>Error fetching weather data</div>;
   }
 
+  // Main component structure
   return (
     <Grid className={classes.root} container spacing={2}>
+      {/* Header section */}
       <Grid container item alignItems='center'>
         <Grid item xs={12} md={3}>
           <Typography
@@ -57,12 +65,13 @@ function Home() {
           md={9}
           alignItems='center'
           sx={{ justifyContent: { xs: 'center', md: 'flex-end' } }}
-          mt={{ xs: 2, md: 0 }} // Adjusted top margin for better spacing on mobile
-        >
+          mt={{ xs: 2, md: 0 }}>
+          {/* DegreeTabs component for temperature unit selection */}
           <DegreeTabs setDegreeSign={setDegreeSign} degreeSign={degreeSign} />
         </Grid>
       </Grid>
 
+      {/* Main weather information section */}
       <Grid
         item
         xs={12}
@@ -83,8 +92,10 @@ function Home() {
             lineHeight: { xs: '16.5px', md: '23.5px' },
             mb: 2,
           }}>
+          {/* Format and display the date */}
           {formatDate(weatherData.days[0].datetime)}
         </Typography>
+        {/* Display weather icon based on the weather condition */}
         {WeatherIcon[weatherData.days[0].icon]}
         <Typography
           sx={{
@@ -96,6 +107,8 @@ function Home() {
           {weatherData.days[0].conditions}
         </Typography>
       </Grid>
+
+      {/* Temperature and description section */}
       <Grid
         item
         xs={12}
@@ -107,6 +120,7 @@ function Home() {
             fontSize: { xs: 48, md: 144 },
             lineHeight: { xs: '56px', md: '169px' },
           }}>
+          {/* Display current temperature */}
           {Math.floor(
             handleDegreeConvert(degreeSign, weatherData.days[0].temp)
           )}
@@ -118,6 +132,7 @@ function Home() {
             fontSize: { xs: 18, md: 48 },
             lineHeight: { xs: '30px', md: '56px' },
           }}>
+          {/* Display temperature range */}
           {`${Math.floor(
             handleDegreeConvert(degreeSign, weatherData.days[0].tempmax)
           )}° / ${Math.floor(
@@ -130,9 +145,12 @@ function Home() {
             fontSize: { xs: 14, md: 24 },
             lineHeight: { xs: '20px', md: '56px' },
           }}>
+          {/* Display weather description */}
           {weatherData.days[0].description}
         </Typography>
       </Grid>
+
+      {/* WeatherTabs component for hourly weather details */}
       <Grid item xs={12} md={12} sx={{ textAlign: 'left' }}>
         <WeatherTabs weather={weatherData} degreeSign={degreeSign} />
       </Grid>
