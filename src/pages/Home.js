@@ -2,8 +2,10 @@ import React from 'react';
 import { Grid, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import DegreeTabs from '../components/DegreeTabs';
+import WeatherTabs from '../components/WeatherTabs';
 import Background from '../assets/Background.jpg';
 import Cloud from '../assets/Cloud.png';
+import useWeatherData from '../hooks/useWeatherData';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -13,6 +15,9 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     padding: '20px 80px',
+    '@media (max-width:600px)': {
+      padding: '20px',
+    },
   },
   image: {
     marginTop: 20,
@@ -21,7 +26,30 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Home() {
+  const { weatherData, loading } = useWeatherData();
   const classes = useStyles();
+  console.log({ weatherData });
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const weekday = new Intl.DateTimeFormat('en-US', {
+      weekday: 'long',
+    }).format(date);
+
+    const formattedDate = `${weekday} ${day}, ${year}`;
+
+    return formattedDate;
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!weatherData) {
+    return <div>Error fetching weather data</div>;
+  }
 
   return (
     <Grid className={classes.root} container spacing={2}>
@@ -61,7 +89,7 @@ function Home() {
             fontSize: { xs: 36, md: 64 },
             lineHeight: { xs: '42px', md: '75px' },
           }}>
-          New Cairo
+          {weatherData.address}
         </Typography>
         <Typography
           sx={{
@@ -69,7 +97,7 @@ function Home() {
             fontSize: { xs: 14, md: 20 },
             lineHeight: { xs: '16.5px', md: '23.5px' },
           }}>
-          Friday 20, 2020
+          {formatDate(weatherData.days[0].datetime)}
         </Typography>
         <img className={classes.image} src={Cloud} alt='weather' />
         <Typography
@@ -78,7 +106,7 @@ function Home() {
             fontSize: { xs: 18, md: 30 },
             lineHeight: { xs: '21px', md: '35px' },
           }}>
-          Cloudy
+          {weatherData.days[0].conditions}
         </Typography>
       </Grid>
       <Grid
@@ -92,7 +120,7 @@ function Home() {
             fontSize: { xs: 48, md: 144 },
             lineHeight: { xs: '56px', md: '169px' },
           }}>
-          72&deg;
+          {Math.floor(weatherData.days[0].temp)}&deg;
         </Typography>
         <Typography
           sx={{
@@ -100,7 +128,9 @@ function Home() {
             fontSize: { xs: 18, md: 48 },
             lineHeight: { xs: '30px', md: '56px' },
           }}>
-          81&deg; / 63&deg;
+          {`${Math.floor(weatherData.days[0].tempmax)}° / ${Math.floor(
+            weatherData.days[0].tempmin
+          )}°`}
         </Typography>
         <Typography
           sx={{
@@ -108,8 +138,11 @@ function Home() {
             fontSize: { xs: 14, md: 24 },
             lineHeight: { xs: '20px', md: '56px' },
           }}>
-          Cloudy throughout the day
+          {weatherData.days[0].description}
         </Typography>
+      </Grid>
+      <Grid item xs={12} md={12} sx={{ textAlign: 'left' }}>
+        <WeatherTabs weather={weatherData} />
       </Grid>
     </Grid>
   );
