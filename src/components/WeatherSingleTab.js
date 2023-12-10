@@ -1,26 +1,9 @@
 import React from 'react';
 import { Typography, Grid } from '@mui/material';
-import {
-  Cloud,
-  CloudQueue,
-  WbSunny,
-  NightsStay,
-  Thunderstorm,
-  NightlightRound,
-} from '@mui/icons-material';
-import { convertDateToDay, handleDegreeConvert } from '../functions';
+import { handleDegreeConvert, getDay } from '../functions';
+import WeatherIcon from './WeatherIcon';
 
 function WeatherSingleTab({ degrees, hours, degreeSign }) {
-  const weatherIcons = {
-    cloudy: <Cloud fontSize='large' />,
-    'clear-night': <NightlightRound fontSize='large' />,
-    'partly-cloudy-day': <CloudQueue fontSize='large' />,
-    'clear-day': <WbSunny fontSize='large' />,
-    'partly-cloudy-night': <NightsStay fontSize='large' />,
-    rain: <Thunderstorm fontSize='large' />,
-  };
-  console.log(new Date());
-
   return (
     <Grid
       container
@@ -51,10 +34,10 @@ function WeatherSingleTab({ degrees, hours, degreeSign }) {
                 ? degree.datetime === '00:00:00'
                   ? 'Now'
                   : degree.datetime.slice(0, 5)
-                : convertDateToDay(degree.datetime)
+                : getDay(degree.datetime)
             }`}
           </Typography>
-          {weatherIcons[degree.icon]}
+          {WeatherIcon[degree.icon]}
           <Typography
             sx={{
               fontWeight: 400,
