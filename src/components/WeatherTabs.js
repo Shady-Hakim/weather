@@ -2,13 +2,36 @@ import React, { useState } from 'react';
 import { Tabs, Tab, Typography, Box } from '@mui/material';
 import WeatherSingleTab from './WeatherSingleTab';
 
+/**
+ * WeatherTabs displays a tabbed view for hourly and daily weather information.
+ * It includes tabs for switching between hourly and daily views, and renders
+ * the corresponding weather information grid using WeatherSingleTab component.
+ *
+ * @param {Object} weather - Weather data containing hourly and daily information.
+ * @param {number} degreeSign - Sign for temperature conversion (Celsius/Fahrenheit).
+ * @returns {JSX.Element} - React component representing the tabbed weather view.
+ */
 function WeatherTabs({ weather, degreeSign }) {
   const [value, setValue] = useState(0);
 
+  /**
+   * Handles tab change by updating the selected tab value.
+   *
+   * @param {Object} event - The event object.
+   * @param {number} newValue - The new selected tab value.
+   */
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  /**
+   * Renders the tab panel content based on the selected tab index.
+   *
+   * @param {Object} children - The content to be rendered inside the panel.
+   * @param {number} value - The selected tab value.
+   * @param {number} index - The index of the tab panel.
+   * @returns {JSX.Element} - React component representing the tab panel content.
+   */
   const TabPanel = ({ children, value, index }) => {
     return (
       <>

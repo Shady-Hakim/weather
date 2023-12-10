@@ -3,6 +3,15 @@ import { Typography, Grid } from '@mui/material';
 import { handleDegreeConvert, getDay } from '../functions';
 import WeatherIcon from './WeatherIcon';
 
+/**
+ * WeatherSingleTab displays weather information for each hour or day in a scrollable grid.
+ * It includes the time or day, weather icon, and temperature.
+ *
+ * @param {Object[]} degrees - Array of weather data for each hour or day.
+ * @param {boolean} hours - Indicates whether the data is hourly or daily.
+ * @param {number} degreeSign - Sign for temperature conversion (Celsius/Fahrenheit).
+ * @returns {JSX.Element} - React component representing the weather information grid.
+ */
 function WeatherSingleTab({ degrees, hours, degreeSign }) {
   return (
     <Grid
